@@ -1,0 +1,19 @@
+# Local development only. Production / other machines: use XAMPP — see docs/DEPLOY-XAMPP.md
+services:
+  app:
+    build: .
+    container_name: solar-app
+    ports:
+      - "8088:80"
+    volumes:
+      - ./public:/var/www/html
+      - ./includes:/var/www/includes
+    environment:
+      - DB_HOST=host.docker.internal
+      - DB_PORT=3306
+      - DB_NAME=solar_manager
+      - DB_USER=root
+      - DB_PASS=root
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped

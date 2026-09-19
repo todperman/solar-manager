@@ -1,0 +1,27 @@
+# G2K Solar Manager — project root
+#
+# Lets the project be copied straight into XAMPP htdocs (e.g. htdocs/solar-manager)
+# and opened at http://localhost/solar-manager/ . Everything is served from public/;
+# config/, includes/, sql/ and scripts/ are never reachable from the web.
+#
+# For production a VirtualHost with DocumentRoot pointing at public/ is preferred
+# (see docs/DEPLOY-XAMPP.md) — this file is then unused.
+
+Options -Indexes
+DirectoryIndex index.php
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(config|includes|sql|scripts|docs|\.git)(/|$) - [F,L]
+    RewriteCond %{REQUEST_URI} !/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+<IfModule !mod_rewrite.c>
+    # mod_rewrite is required: enable it in xampp/apache/conf/httpd.conf
+    Require all denied
+</IfModule>
+
+<FilesMatch "^\.|\.(sql|md|sh|bat|example\.php|lock|json|yml)$">
+    Require all denied
+</FilesMatch>
